@@ -24,6 +24,6 @@ export const VehicleService = {
     },
 
     async getVehicleById(id: string) {
-        return apiFetch(`/vehicles/${id}`);
+        return apiFetch(`/cars/${id}`);
     },
 };

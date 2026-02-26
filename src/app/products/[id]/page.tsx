@@ -11,6 +11,7 @@ import {
   Activity,
   Timer,
 } from "lucide-react";
+import { VehicleService } from "../../../services/vehicle.service";
 
 export default function ProductDetailsPage() {
   const router = useRouter();
@@ -22,12 +23,14 @@ export default function ProductDetailsPage() {
 
   useEffect(() => {
     const fetchProduct = async () => {
-      const res = await fetch(`http://localhost:3001/cars/${id}`);
-      const data = await res.json();
-
-      setProduct(data);
-      setSelectedVariant(data.variants?.[0]?.id);
-      setSelectedColor(data.colors?.[0]);
+      try {
+        const data = await VehicleService.getVehicleById(id as string) as any;
+        setProduct(data);
+        setSelectedVariant(data.variants?.[0]?.id);
+        setSelectedColor(data.colors?.[0]);
+      } catch (error) {
+        console.error("Error fetching product:", error);
+      }
     };
 
     if (id) fetchProduct();

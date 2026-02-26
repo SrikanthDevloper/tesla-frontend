@@ -1,4 +1,5 @@
 import { createSlice, createAsyncThunk, PayloadAction } from '@reduxjs/toolkit';
+import { VehicleService } from '../../services/vehicle.service';
 import { Vehicle } from './vehiclesSlice';
 
 interface DashboardState {
@@ -18,12 +19,11 @@ const initialState: DashboardState = {
 export const fetchFeaturedCars = createAsyncThunk(
   'dashboard/fetchFeaturedCars',
   async () => {
-    const response = await fetch('http://localhost:3001/cars/getAllCars?page=1&limit=3');
-    if (!response.ok) {
-      throw new Error('Failed to fetch featured cars');
-    }
-    const data = await response.json();
-    return data.data as Vehicle[];
+    const response = await VehicleService.getVehicles({
+      page: 1,
+      limit: 3
+    }) as { data: Vehicle[] };
+    return response.data;
   }
 );
 
